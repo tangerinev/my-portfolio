@@ -1,24 +1,10 @@
 import projects from "../data/projects.json";
 
-export default function ProjectSidebar({ openId, setOpen }) {
+export default function ProjectSidebar({ current, setCurrent }) {
   return (
-    <aside
-      style={{
-        /* 고정 위치: viewport 왼쪽 0px */
-        position: "fixed",
-        top: "80px" /* TopMenu 높이만큼 내려서 겹치지 않게 */,
-        left: 0,
-        width: "200px",
-        height: "calc(100vh - 80px)",
-        overflowY: "auto",
-        padding: "1rem 1rem 2rem",
-        borderRight: "1px solid #e2e8f0",
-        background: "#ffffff",
-        boxShadow: "2px 0 4px rgba(0,0,0,.04)",
-      }}
-    >
-      <h4 style={{ margin: "0 0 .75rem", fontWeight: 600 }}>Projects</h4>
-      <ul style={{ listStyle: "none", padding: 0, margin: 0, lineHeight: 1.6 }}>
+    <aside class="sidebar">
+      <h4 style={{ margin: "0 0 .8rem", fontWeight: 600 }}>Projects</h4>
+      <ul style={{ listStyle: "none", padding: 0, lineHeight: 1.6 }}>
         {projects.map((p) => (
           <li key={p.id}>
             <button
@@ -26,7 +12,7 @@ export default function ProjectSidebar({ openId, setOpen }) {
                 document
                   .querySelector("#" + p.id)
                   ?.scrollIntoView({ behavior: "smooth", block: "center" });
-                setOpen(p.id);
+                setCurrent(p.id);
               }}
               style={{
                 background: "none",
@@ -34,8 +20,8 @@ export default function ProjectSidebar({ openId, setOpen }) {
                 textAlign: "left",
                 width: "100%",
                 cursor: "pointer",
-                color: p.id === openId ? "#2563eb" : "#475569",
-                fontWeight: p.id === openId ? 600 : 400,
+                color: p.id === current ? "#2563eb" : "#475569",
+                fontWeight: p.id === current ? 600 : 400,
               }}
             >
               {p.title}

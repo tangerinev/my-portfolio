@@ -1,78 +1,85 @@
-/**
- * src/components/FixedSidebarTimeline.jsx
- *  ⎿ ProjectSidebar  (고정)
- *   └ VerticalTimeline
- *        └ Blueprint (ERD  스타일)
- */
-import { useState } from "preact/hooks";
+import { useState, useEffect } from "preact/hooks";
 import projects from "../data/projects.json";
+import ProjectSidebar from "./ProjectSidebar.jsx";
 
-/*----------------------- ① 고정 사이드바 ----------------------+*/
-function ProjectSidebar({ current, setCurrent }) {
+/* ------------- Feature 블록 (클릭 → 기술 토글) -------------- */
+function Feature({ name, techList, left, row }) {
+  const [open, setOpen] = useState(false);
+
+  /* 세부 기술 토글 박스 위치 조정 */
+  const popStyle = {
+    position: "absolute",
+    top: `${row * 46}px`,
+    [left ? "left" : "right"]: "215px",
+    maxWidth: "260px",
+    padding: ".7rem",
+    background: "#fff",
+    border: "1px solid #e2e8f0",
+    borderRadius: "6px",
+    boxShadow: "0 4px 14px rgba(0,0,0,.08)",
+    fontSize: ".85rem",
+    lineHeight: 1.45,
+    zIndex: 20,
+  };
+
   return (
-    <aside
-      style={{
-        position: "fixed",
-        top: "80px",
-        left: 0,
-        width: "200px",
-        height: "calc(100vh - 80px)",
-        overflowY: "auto",
-        padding: "1rem 1rem 2rem",
-        borderRight: "1px solid #e2e8f0",
-        background: "#fff",
-        boxShadow: "2px 0 6px rgba(0,0,0,.04)",
-        zIndex: 90,
-      }}
-    >
-      <h4 style={{ margin: "0 0 .8rem" }}>Projects</h4>
-      <ul style={{ listStyle: "none", padding: 0, lineHeight: 1.6 }}>
-        {projects.map((p) => (
-          <li key={p.id}>
-            <button
-              onClick={() => {
-                document
-                  .querySelector("#" + p.id)
-                  ?.scrollIntoView({ behavior: "smooth", block: "center" });
-                setCurrent(p.id);
-              }}
-              style={{
-                background: "none",
-                border: "none",
-                textAlign: "left",
-                width: "100%",
-                cursor: "pointer",
-                fontWeight: p.id === current ? 600 : 400,
-                color: p.id === current ? "#2563eb" : "#475569",
-              }}
-            >
-              {p.title}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </aside>
+    <li style={{ margin: `${row ? 24 : 0}px 0`, position: "relative" }}>
+      <button
+        onClick={() => setOpen(!open)}
+        style={{
+          minWidth: "180px",
+          padding: ".45rem .7rem",
+          border: "1px solid #cbd5e1",
+          background: "#f8fafc",
+          borderRadius: "6px",
+          textAlign: "left",
+          fontWeight: 500,
+          cursor: "pointer",
+        }}
+      >
+        {name}
+      </button>
+      {open && (
+        <div style={popStyle}>
+          {techList.map((t) => (
+            <div key={t}>• {t}</div>
+          ))}
+        </div>
+      )}
+    </li>
   );
 }
 
-/*---------------- ② Blueprint : ERD 블록 + 선 + 토글 ---------------*/
+/* ------------- Blueprint (ERD 스타일) -------------- */
 function Blueprint({ front, back, tech }) {
-  const rowH = 46; // 행 높이
+  const rowH = 46;
   const svgH = Math.max(front.length, back.length) * rowH;
-
   return (
     <div style={{ marginTop: "1rem", position: "relative" }}>
-      <div style={{ display: "flex", gap: "5rem" }}>
-        <Column list={front} tech={tech} left />
-        <Column list={back} tech={tech} />
+      <div class="blueprint-cols">
+        {/* 왼쪽: Frontend */}
+        <ul style={{ listStyle: "none", padding: 0 }}>
+          {front.map((f, i) => (
+            <Feature key={f} name={f} techList={tech[f] || []} left row={i} />
+          ))}
+        </ul>
+
+        {/* 오른쪽: Backend */}
+        <ul style={{ listStyle: "none", padding: 0 }}>
+          {back.map((b, i) => (
+            <Feature
+              key={b}
+              name={b}
+              techList={tech[b] || []}
+              left={false}
+              row={i}
+            />
+          ))}
+        </ul>
       </div>
 
-      {/* 가로 연결선 */}
-      <svg
-        width="100%"
-        height={svgH}
-        style={{ position: "absolute", left: 0, top: 0, pointerEvents: "none" }}
-      >
+      {/* 가로 화살표 선 */}
+      <svg class="blueprint-svg" width="100%" height={svgH}>
         {front.map((_, i) => (
           <line
             key={i}
@@ -102,80 +109,26 @@ function Blueprint({ front, back, tech }) {
   );
 }
 
-/* Feature 블록 한 칸 + 세부 기술 토글 */
-function Column({ list, tech, left = false }) {
-  const [open, setOpen] = useState(null);
-  return (
-    <ul style={{ listStyle: "none", padding: 0 }}>
-      {list.map((feat, i) => (
-        <li key={feat} style={{ margin: `${i ? 24 : 0}px 0` }}>
-          <button
-            onClick={() => setOpen(open === feat ? null : feat)}
-            style={{
-              minWidth: "180px",
-              padding: ".45rem .7rem",
-              border: "1px solid #cbd5e1",
-              background: "#f8fafc",
-              borderRadius: "6px",
-              textAlign: "left",
-              fontWeight: 500,
-              cursor: "pointer",
-            }}
-          >
-            {feat}
-          </button>
-          {open === feat && (
-            <div
-              style={{
-                position: "absolute",
-                [left ? "left" : "right"]: "215px",
-                top: `${i * 46}px`,
-                maxWidth: "260px",
-                padding: ".7rem",
-                background: "#fff",
-                border: "1px solid #e2e8f0",
-                borderRadius: "6px",
-                boxShadow: "0 4px 14px rgba(0,0,0,.08)",
-                fontSize: ".85rem",
-                lineHeight: 1.45,
-              }}
-            >
-              {tech[feat]?.map((t) => (
-                <div key={t}>• {t}</div>
-              ))}
-            </div>
-          )}
-        </li>
-      ))}
-    </ul>
-  );
-}
+/* ------------- 타임라인 (노드 + 클릭 확장) -------------- */
+function VerticalTimeline({ current, setCurrent }) {
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
 
-/*-------------- ③ 타임라인 + 중앙 분리 애니메이션 ---------------*/
-function VerticalTimeline() {
-  const [openId, setOpen] = useState(null);
+  /* 화면 리사이즈 시 isMobile 다시 계산 (선택) */
+  useEffect(() => {
+    const onResize = () => setCurrent((c) => c); // trigger re-render
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   return (
     <section
-      style={{
-        marginLeft: "220px",
-        padding: "2rem 1rem 4rem",
-        maxWidth: "900px",
-      }}
+      class="timeline-wrapper"
+      style={{ marginLeft: isMobile ? 0 : "220px", padding: "2rem 1rem 4rem" }}
     >
-      {/* 중앙 세로선 */}
-      <div
-        style={{
-          position: "absolute",
-          left: "calc(50% + 110px)",
-          top: 0,
-          bottom: 0,
-          width: "4px",
-          background: "#cbd5e1",
-        }}
-      />
+      <div class="midline" />
       {projects.map((p, idx) => {
-        const side = idx % 2 ? "left" : "right";
-        const isOpen = openId === p.id;
+        const left = idx % 2 === 1;
+        const open = current === p.id;
         return (
           <div
             key={p.id}
@@ -184,40 +137,48 @@ function VerticalTimeline() {
               position: "relative",
               margin: "3.5rem 0",
               display: "flex",
-              justifyContent: side === "left" ? "flex-start" : "flex-end",
+              justifyContent: isMobile
+                ? "center"
+                : left
+                ? "flex-start"
+                : "flex-end",
             }}
           >
             {/* 노드 점 */}
-            <div
-              style={{
-                position: "absolute",
-                left: "calc(50% + 110px)",
-                top: "0",
-                transform: "translate(-50%,-50%)",
-                width: "16px",
-                height: "16px",
-                borderRadius: "50%",
-                background: "#1e293b",
-              }}
-            />
+            {!isMobile && (
+              <div
+                style={{
+                  position: "absolute",
+                  left: "calc(50% + 110px)",
+                  top: "0",
+                  transform: "translate(-50%,-50%)",
+                  width: "16px",
+                  height: "16px",
+                  borderRadius: "50%",
+                  background: "#2563eb",
+                }}
+              />
+            )}
+
             {/* 카드 */}
             <article
-              onClick={() => setOpen(isOpen ? null : p.id)}
+              onClick={() => setCurrent(open ? null : p.id)}
               style={{
-                width: "46%",
+                width: isMobile ? "100%" : "46%",
                 cursor: "pointer",
                 border: "1px solid #e2e8f0",
                 borderRadius: "8px",
                 padding: "1rem",
                 background: "#fff",
-                transform: isOpen
-                  ? `translateY(${side === "left" ? "-60px" : "60px"})`
+                boxShadow: open ? "0 4px 16px rgba(0,0,0,.08)" : "none",
+                transform: open
+                  ? `translateY(${isMobile ? "0" : left ? "-60px" : "60px"})`
                   : "none",
-                transition: "transform .4s",
+                transition: "transform .35s",
               }}
             >
               <strong>{p.date}</strong> — {p.title}
-              {isOpen && (
+              {open && (
                 <Blueprint front={p.front} back={p.back} tech={p.tech} />
               )}
             </article>
@@ -228,13 +189,13 @@ function VerticalTimeline() {
   );
 }
 
-/*------------------- ④ 최상위 통합 -------------------*/
+/* ------------- 최상위 통합 컴포넌트 -------------- */
 export default function FixedSidebarTimeline() {
   const [current, setCurrent] = useState(null);
   return (
     <>
       <ProjectSidebar current={current} setCurrent={setCurrent} />
-      <VerticalTimeline />
+      <VerticalTimeline current={current} setCurrent={setCurrent} />
     </>
   );
 }

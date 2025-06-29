@@ -1,63 +1,20 @@
 ---
-/*
-  src/layouts/SiteLayout.astro
-  ─────────────────────────────
-  공통 레이아웃:
-
-  ① TopMenu  – 상단 고정 네비
-  ② ProjectSidebar – 뷰포트 왼쪽에 고정(fixed)
-  ③ <slot /> – 각 페이지 고유 콘텐츠
-*/
 import TopMenu from '../components/TopMenu.jsx';
-import ProjectSidebar from '../components/ProjectSidebar.jsx';
+import '../styles/global.css';          /* ← 전역 CSS import */
 
-/* 페이지에서 내려주는 pageId (기본 'me') */
-const { pageId = 'me' } = Astro.props;
+const { pageId = 'me' } = Astro.props;  /* TopMenu 활성표시용 */
 ---
-
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <title>Vincent’s Portfolio</title>
-
-    <style>
-      body { margin:0; font-family:system-ui, sans-serif; }
-
-      /* ❶ 고정 사이드바 스타일 */
-      .sidebar-fixed {
-        position:fixed;
-        top:80px;               /* TopMenu 높이만큼 아래 */
-        left:0;
-        width:200px;
-        height:calc(100vh - 80px);
-        overflow-y:auto;
-        padding:1rem 1rem 2rem;
-        border-right:1px solid #e2e8f0;
-        background:#fff;
-        box-shadow:2px 0 4px rgba(0,0,0,.05);
-        z-index:90;
-      }
-
-      /* ❷ 본문 – 사이드바만큼 왼쪽 패딩 */
-      .content {
-        padding:2rem 2rem 2rem 220px; /* 200px + 여유 20px */
-      }
-    </style>
   </head>
-
   <body>
-    <!-- Top Navigation -->
+    <!-- 상단 네비 -->
     <TopMenu active={pageId} />
 
-    <!-- Fixed Sidebar (항상 노출) -->
-    <ProjectSidebar
-      client:visible
-      openId={null}
-      setOpen={() => {}}
-    />
-
-    <!-- Page-specific content -->
-    <main class="content">
+    <!-- 페이지별 콘텐츠 -->
+    <main>
       <slot />
     </main>
   </body>

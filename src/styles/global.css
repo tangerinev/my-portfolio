@@ -1,0 +1,81 @@
+/* ---------- 레이아웃 ---------- */
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+}
+
+main {
+  /* 데스크톱 기본 패딩 (사이드바 폭 + 20px) */
+  padding: 2rem 2rem 2rem 220px;
+}
+
+/* 모바일 (≤ 768px) 은 좌측 패딩 제거 */
+@media (max-width: 768px) {
+  main {
+    padding: 1rem;
+  }
+}
+
+/* ---------- 고정 사이드바 ---------- */
+.sidebar {
+  position: fixed;
+  top: 80px; /* TopMenu 바로 아래부터 */
+  left: 0;
+  width: 200px;
+  height: calc(100vh - 80px);
+  overflow-y: auto;
+  padding: 1rem 1rem 2rem;
+  border-right: 1px solid #e2e8f0;
+  background: #fff;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.04);
+  z-index: 90;
+}
+
+/* 모바일에서는 사이드바 안 보이도록 */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+}
+
+/* ---------- 타임라인 ---------- */
+.timeline-wrapper {
+  position: relative;
+  max-width: 900px;
+}
+.midline {
+  position: absolute;
+  left: calc(50% + 110px); /* 카드 폭 46% + 여유 110px */
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #cbd5e1;
+}
+@media (max-width: 768px) {
+  .midline {
+    display: none;
+  }
+}
+
+/* ---------- 블루프린트 컬럼 ---------- */
+.blueprint-cols {
+  display: flex;
+  gap: 5rem;
+}
+@media (max-width: 768px) {
+  .blueprint-cols {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+.blueprint-svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+@media (max-width: 768px) {
+  .blueprint-svg {
+    display: none;
+  }
+}
