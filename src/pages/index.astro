@@ -1,11 +1,19 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Timeline from '../components/Timeline.jsx';
 ---
+<html lang="ko">
+  <head>
+    <title>Vincent’s Timeline Portfolio</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1 style="font-family:sans-serif;font-size:2rem;">My Work Timeline</h1>
 
-<Layout>
-	<Welcome />
-</Layout>
+    <!-- ❶ ‘섬( island )’ 로딩 지시어 -->
+    <Timeline client:visible />
+
+    <p style="margin-top:2rem;font-size:0.9rem;">
+      © 2025 Vincent&nbsp;Lee
+    </p>
+  </body>
+</html>
