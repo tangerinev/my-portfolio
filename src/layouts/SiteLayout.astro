@@ -1,0 +1,37 @@
+---
+import TopMenu from '../components/TopMenu.jsx';
+import SideBookmarks from '../components/SideBookmarks.jsx';
+
+// 각 페이지 front-matter에서 내려받을 값
+const { pageId = 'me', bookmarks = [] } = Astro.props;
+---
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vincent's Portfolio</title>
+    <style>
+      body { margin:0; font-family:system-ui,sans-serif; }
+      main { padding:2rem; }
+      .layout { display:flex; }
+      .sidebar { width:180px; transition:transform .3s; }
+      .hide-sidebar { transform:translateX(-100%); }
+      .content { flex:1; min-width:0; }
+    </style>
+  </head>
+  <body>
+    <!-- TOP MENU -->
+    <TopMenu active={pageId} />
+
+    <div class="layout">
+      <!-- 좌측 북마크 (Me 페이지에서만 노출) -->
+      <aside class={`sidebar ${pageId!=='me' ? 'hide-sidebar' : ''}`}>
+        {pageId === 'me' && <SideBookmarks items={bookmarks} client:visible />}
+      </aside>
+
+      <!-- 페이지별 실제 콘텐츠 -->
+      <section class="content">
+        <slot />
+      </section>
+    </div>
+  </body>
+</html>
