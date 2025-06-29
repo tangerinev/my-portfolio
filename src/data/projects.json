@@ -1,0 +1,100 @@
+[
+  {
+    "id": "langex",
+    "date": "2024-12",
+    "title": "LangEx",
+    "desc": "실시간 언어 교환 플랫폼 MVP",
+    "front": ["Chat UI", "Optimistic message", "Profile wizard"],
+    "back": ["WebSocket hub", "JWT Auth", "REST Task API"],
+    "tech": {
+      "Chat UI": ["React-18", "CSS-in-JS"],
+      "Profile wizard": ["React-Hook-Form", "Zod"],
+      "WebSocket hub": ["C++20 ASIO", "Redis Pub/Sub"],
+      "JWT Auth": ["HMAC-SHA256", "Refresh-token rotation"]
+    }
+  },
+  {
+    "id": "ai-tutor",
+    "date": "2025-03",
+    "title": "AI Tutor Module",
+    "desc": "GPT-4o 기반 맞춤형 학습 챗봇",
+    "front": ["Conversation panel", "Markdown hints"],
+    "back": ["Prompt orchestration", "Vector search"],
+    "tech": {
+      "Prompt orchestration": ["LangChain", "OpenAI API"],
+      "Vector search": ["Pinecone", "Cosine similarity"]
+    }
+  },
+  {
+    "id": "fintrack",
+    "date": "2023-10",
+    "title": "FinTrack",
+    "desc": "개인 지출 자동 분류 & 시각화 대시보드",
+    "front": ["D3 Charts", "Budget calendar"],
+    "back": ["Bank webhook", "ML categorizer"],
+    "tech": {
+      "D3 Charts": ["D3 v7", "SVG"],
+      "ML categorizer": ["Python", "LightGBM", "Pandas"]
+    }
+  },
+  {
+    "id": "recipesnap",
+    "date": "2023-05",
+    "title": "RecipeSnap",
+    "desc": "사진 한 장으로 재료를 인식해 레시피 추천",
+    "front": ["Camera capture", "Swipe cards"],
+    "back": ["Image classifier", "Recommendation engine"],
+    "tech": {
+      "Image classifier": ["TensorFlow Lite", "MobileNetV3"],
+      "Recommendation engine": ["Collaborative filter", "DuckDB"]
+    }
+  },
+  {
+    "id": "travelgram",
+    "date": "2022-11",
+    "title": "TravelGram",
+    "desc": "여행기록 + 소셜 지도 공유 앱",
+    "front": ["Interactive map", "Story timeline"],
+    "back": ["Geo-query API", "Push notifier"],
+    "tech": {
+      "Interactive map": ["Mapbox GL", "WebGL"],
+      "Geo-query API": ["PostGIS", "GraphQL Subscriptions"]
+    }
+  },
+  {
+    "id": "notezen",
+    "date": "2022-07",
+    "title": "NoteZen",
+    "desc": "Markdown 실시간 협업 노트 SaaS",
+    "front": ["Editor.js", "Presence cursors"],
+    "back": ["CRDT sync", "OAuth2 SSO"],
+    "tech": {
+      "CRDT sync": ["Yjs", "WebSocket"],
+      "OAuth2 SSO": ["Auth0", "PKCE Flow"]
+    }
+  },
+  {
+    "id": "plantwatch",
+    "date": "2021-09",
+    "title": "PlantWatch",
+    "desc": "IoT 화분 센서 & 성장 모니터링 앱",
+    "front": ["BLE dashboard", "Growth chart"],
+    "back": ["MQTT broker", "Alert scheduler"],
+    "tech": {
+      "BLE dashboard": ["React-Native", "Expo"],
+      "MQTT broker": ["Mosquitto", "AWS IoT Core"]
+    }
+  },
+  {
+    "id": "crowdquiz",
+    "date": "2021-02",
+    "title": "CrowdQuiz",
+    "desc": "라이브 스트리밍 퀴즈 게임 플랫폼",
+    "front": ["Latency-aware player", "Leaderboard"],
+    "back": ["Signal Server", "Prize payout service"],
+    "tech": {
+      "Signal Server": ["Go", "gRPC", "NATS"],
+      "Prize payout service": ["Stripe API", "Cloud Tasks"]
+    }
+  }
+]
