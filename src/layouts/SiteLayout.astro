@@ -1,37 +1,34 @@
 ---
+/*
+  src/layouts/SiteLayout.astro
+  ─────────────────────────────
+  공통 레이아웃:
+  1) TopMenu  ― 항상 보이는 상단 네비게이션
+  2) <slot /> ― 각 페이지 고유 콘텐츠
+     (Me 페이지에서는 <VerticalTimeline> 안에서
+      ProjectSidebar 가 함께 렌더링됩니다.)
+*/
 import TopMenu from '../components/TopMenu.jsx';
-import SideBookmarks from '../components/SideBookmarks.jsx';
 
-// 각 페이지 front-matter에서 내려받을 값
-const { pageId = 'me', bookmarks = [] } = Astro.props;
+/* 페이지에서 내려준 pageId (기본값 'me') */
+const { pageId = 'me' } = Astro.props;
 ---
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <title>Vincent's Portfolio</title>
+    <title>Vincent’s Portfolio</title>
     <style>
-      body { margin:0; font-family:system-ui,sans-serif; }
-      main { padding:2rem; }
-      .layout { display:flex; }
-      .sidebar { width:180px; transition:transform .3s; }
-      .hide-sidebar { transform:translateX(-100%); }
-      .content { flex:1; min-width:0; }
+      body { margin: 0; font-family: system-ui, sans-serif; }
+      main { padding: 2rem; }
     </style>
   </head>
   <body>
-    <!-- TOP MENU -->
+    <!-- ① 상단 메뉴 -->
     <TopMenu active={pageId} />
 
-    <div class="layout">
-      <!-- 좌측 북마크 (Me 페이지에서만 노출) -->
-      <aside class={`sidebar ${pageId!=='me' ? 'hide-sidebar' : ''}`}>
-        {pageId === 'me' && <SideBookmarks items={bookmarks} client:visible />}
-      </aside>
-
-      <!-- 페이지별 실제 콘텐츠 -->
-      <section class="content">
-        <slot />
-      </section>
-    </div>
+    <!-- ② 페이지 고유 콘텐츠 -->
+    <main>
+      <slot />
+    </main>
   </body>
 </html>

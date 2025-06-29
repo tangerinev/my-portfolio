@@ -1,6 +1,8 @@
 import { useState } from "preact/hooks";
 import projects from "../data/projects.json";
 
+import ProjectSidebar from "./ProjectSidebar.jsx";
+
 export default function VerticalTimeline() {
   const [openId, setOpen] = useState(null);
 
