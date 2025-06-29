@@ -6,7 +6,9 @@ import ProjectSidebar from "./ProjectSidebar.jsx";
 import { useEffect, useRef } from "preact/hooks";
 
 function Blueprint({ front, back }) {
-  /* 1) mermaid 마크다운 문자열 만들기 */
+  const ref = useRef(null);
+
+  // Mermaid 다이어그램 텍스트
   const diagram = [
     "graph LR",
     ...front.map((f, i) => `F${i}["${f}"]`),
@@ -14,25 +16,29 @@ function Blueprint({ front, back }) {
     ...front.map((_, i) => `F${i} --> B${i}`),
   ].join("\n");
 
-  const containerRef = useRef(null);
-
-  /* 2) DOM 삽입 후 1회 mermaid.render 실행 */
   useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      window.mermaid &&
-      containerRef.current
-    ) {
+    async function renderMermaid() {
+      // ① 아직 mermaid가 없으면 ESM 동적 import
+      if (!window.mermaid) {
+        const mod = await import(
+          "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs"
+        );
+        window.mermaid = mod.default;
+        mod.default.initialize({ startOnLoad: false, theme: "default" });
+      }
+
+      // ② SVG 렌더링
       const { mermaid } = window;
-      const uniqueId = "m_" + Math.random().toString(36).slice(2);
-      mermaid.render(uniqueId, diagram, (svgCode) => {
-        containerRef.current.innerHTML = svgCode;
+      const id = "m_" + Math.random().toString(36).slice(2);
+      mermaid.render(id, diagram, (svg) => {
+        if (ref.current) ref.current.innerHTML = svg;
       });
     }
+
+    renderMermaid();
   }, []);
 
-  /* 3) 빈 div → mermaid.render 가 SVG를 삽입 */
-  return <div ref={containerRef} style={{ marginTop: "1rem" }} />;
+  return <div ref={ref} style={{ marginTop: "1rem" }} />;
 }
 
 /* ── 타임라인 ── */

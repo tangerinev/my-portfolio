@@ -6,12 +6,16 @@ const { pageId = 'me' } = Astro.props;
 ---
 <html lang="ko">
   <head>
-    <meta charset="UTF-8" />
-    <title>Vincent’s Portfolio</title>
+  <meta charset="UTF-8" />
+  <title>Vincent’s Portfolio</title>
 
-    <!-- Mermaid ESM (CSP 안전) -->
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-  </head>
+  <!-- 더 안전한 ESM 동적 로더: 전역 window.mermaid 확보 -->
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: false, theme: 'default' });
+    window.mermaid = mermaid;                 // Blueprint에서 사용
+  </script>
+</head>
   <body>
     <TopMenu active={pageId}/>
     <main><slot/></main>
