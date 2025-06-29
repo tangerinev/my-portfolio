@@ -1,5 +1,4 @@
 import projects from "../data/projects.json";
-
 export default function ProjectSidebar({ current, setCurrent }) {
   return (
     <aside class="sidebar">
