@@ -1,18 +1,7 @@
 ---
 import Layout from '../layouts/SiteLayout.astro';
-import Timeline from '../components/Timeline.jsx';
-
-// 타임라인 항목 → 북마크 메뉴도 같이 사용
-import data from '../data/timeline.json';
-const bookmarks = data.map((d, i) => ({ id: `year-${i}`, label: d.date }));
+import VerticalTimeline from '../components/VerticalTimeline.jsx';
 ---
-<Layout pageId="me" bookmarks={bookmarks}>
-  <h2 id="top">Career Timeline</h2>
-  <!-- 섹션마다 id 부여해 북마크와 연결 -->
-  {data.map((item, i) => (
-    <>
-      <h3 id={`year-${i}`}>{item.date} — {item.title}</h3>
-      <p>{item.desc}</p>
-    </>
-  ))}
+<Layout pageId="me">
+  <VerticalTimeline client:visible />
 </Layout>
