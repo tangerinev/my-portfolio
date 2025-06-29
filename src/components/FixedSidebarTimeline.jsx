@@ -2,19 +2,37 @@ import { useState } from "preact/hooks";
 import projects from "../data/projects.json";
 import ProjectSidebar from "./ProjectSidebar.jsx";
 
-/* ── Blueprint: Mermaid ── */
+/* ------------- Blueprint with ref & mermaid.render ------------------- */
+import { useEffect, useRef } from "preact/hooks";
+
 function Blueprint({ front, back }) {
-  const diagram = `
-    graph LR
-    ${front.map((f, i) => `F${i}["${f}"]`).join("\n")}
-    ${back.map((b, i) => `B${i}["${b}"]`).join("\n")}
-    ${front.map((_, i) => `F${i} --> B${i}`).join("\n")}
-  `;
-  return (
-    <div class="mermaid" style={{ marginTop: "1rem" }}>
-      {diagram}
-    </div>
-  );
+  /* 1) mermaid 마크다운 문자열 만들기 */
+  const diagram = [
+    "graph LR",
+    ...front.map((f, i) => `F${i}["${f}"]`),
+    ...back.map((b, i) => `B${i}["${b}"]`),
+    ...front.map((_, i) => `F${i} --> B${i}`),
+  ].join("\n");
+
+  const containerRef = useRef(null);
+
+  /* 2) DOM 삽입 후 1회 mermaid.render 실행 */
+  useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      window.mermaid &&
+      containerRef.current
+    ) {
+      const { mermaid } = window;
+      const uniqueId = "m_" + Math.random().toString(36).slice(2);
+      mermaid.render(uniqueId, diagram, (svgCode) => {
+        containerRef.current.innerHTML = svgCode;
+      });
+    }
+  }, []);
+
+  /* 3) 빈 div → mermaid.render 가 SVG를 삽입 */
+  return <div ref={containerRef} style={{ marginTop: "1rem" }} />;
 }
 
 /* ── 타임라인 ── */
