@@ -10,15 +10,15 @@ export default function ProjectSidebar({ current, setCurrent }) {
             <button
               onClick={() => {
                 document
-                  .querySelector("#" + p.id)
+                  .getElementById(p.id)
                   ?.scrollIntoView({ behavior: "smooth", block: "center" });
                 setCurrent(p.id);
               }}
               style={{
                 background: "none",
                 border: "none",
-                textAlign: "left",
                 width: "100%",
+                textAlign: "left",
                 cursor: "pointer",
                 color: p.id === current ? "#2563eb" : "#475569",
                 fontWeight: p.id === current ? 600 : 400,

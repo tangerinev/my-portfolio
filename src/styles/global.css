@@ -1,25 +1,23 @@
-/* ---------- 레이아웃 ---------- */
+/* ==== 공통 레이아웃 =================================================== */
 body {
   margin: 0;
   font-family: system-ui, sans-serif;
 }
 
 main {
-  /* 데스크톱 기본 패딩 (사이드바 폭 + 20px) */
   padding: 2rem 2rem 2rem 220px;
-}
+} /* 데스크톱: 사이드바 폭 + 20px */
 
-/* 모바일 (≤ 768px) 은 좌측 패딩 제거 */
 @media (max-width: 768px) {
   main {
     padding: 1rem;
-  }
+  } /* 모바일: 패딩 축소 */
 }
 
-/* ---------- 고정 사이드바 ---------- */
+/* ==== 고정(sidebar) =================================================== */
 .sidebar {
   position: fixed;
-  top: 80px; /* TopMenu 바로 아래부터 */
+  top: 80px;
   left: 0;
   width: 200px;
   height: calc(100vh - 80px);
@@ -30,34 +28,55 @@ main {
   box-shadow: 2px 0 6px rgba(0, 0, 0, 0.04);
   z-index: 90;
 }
-
-/* 모바일에서는 사이드바 안 보이도록 */
 @media (max-width: 768px) {
   .sidebar {
     display: none;
   }
 }
 
-/* ---------- 타임라인 ---------- */
-.timeline-wrapper {
+/* ==== 타임라인 ======================================================== */
+.timeline-grid {
+  display: grid;
+  grid-template-columns: 1fr 4px 1fr; /* 카드 | 중앙선 | 카드 */
+  column-gap: 40px;
   position: relative;
-  max-width: 900px;
 }
 .midline {
-  position: absolute;
-  left: calc(50% + 110px); /* 카드 폭 46% + 여유 110px */
-  top: 0;
-  bottom: 0;
+  grid-column: 2 / span 1;
   width: 4px;
   background: #cbd5e1;
 }
+.timeline-dot {
+  grid-column: 2 / span 1;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #2563eb;
+  place-self: center;
+}
+.timeline-card {
+  grid-column: 1 / span 1;
+}
+.timeline-card.right {
+  grid-column: 3 / span 1;
+}
+
 @media (max-width: 768px) {
-  .midline {
+  .timeline-grid {
+    grid-template-columns: 1fr;
+  }
+  .midline,
+  .timeline-dot {
     display: none;
+  }
+  .timeline-card,
+  .timeline-card.right {
+    grid-column: 1 / span 1;
+    width: 100%;
   }
 }
 
-/* ---------- 블루프린트 컬럼 ---------- */
+/* ==== Blueprint (Mermaid) ============================================ */
 .blueprint-cols {
   display: flex;
   gap: 5rem;
@@ -66,16 +85,5 @@ main {
   .blueprint-cols {
     flex-direction: column;
     gap: 1.5rem;
-  }
-}
-.blueprint-svg {
-  position: absolute;
-  left: 0;
-  top: 0;
-  pointer-events: none;
-}
-@media (max-width: 768px) {
-  .blueprint-svg {
-    display: none;
   }
 }
